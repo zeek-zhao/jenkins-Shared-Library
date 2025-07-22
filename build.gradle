@@ -1,37 +1,48 @@
 plugins {
     id 'groovy'
-    id 'java'
-    id 'jacoco'
 }
 
 repositories {
     mavenCentral()
+    // 添加Jenkins仓库
+    maven {
+        url 'https://repo.jenkins-ci.org/public/'
+    }
+    // 添加Jenkins插件仓库
+    maven {
+        url 'https://repo.jenkins-ci.org/releases/'
+    }
 }
 
 dependencies {
+    // Groovy
     implementation 'org.codehaus.groovy:groovy-all:3.0.9'
     
-    testImplementation 'junit:junit:4.13.2'
+    // 测试依赖
+    testImplementation 'org.spockframework:spock-core:2.1-groovy-3.0'
+    testImplementation 'cglib:cglib-nodep:3.3.0'
+    testImplementation 'org.objenesis:objenesis:3.2'
+    
+    // Jenkins Pipeline Unit Testing Framework - 专门用于测试Jenkins共享库
     testImplementation 'com.lesfurets:jenkins-pipeline-unit:1.9'
-    testImplementation 'org.mockito:mockito-core:3.12.4'
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src', 'vars']
+        }
+    }
+    test {
+        groovy {
+            srcDirs = ['test']
+        }
+    }
 }
 
 test {
-    reports {
-        html.required = true
-        junitXml.required = true
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
     }
-}
-
-jacoco {
-    toolVersion = "0.8.7"
-}
-
-jacocoTestReport {
-    reports {
-        xml.required = true
-        html.required = true
-    }
-    
-    dependsOn test
 }
