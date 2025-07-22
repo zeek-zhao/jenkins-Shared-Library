@@ -1,0 +1,37 @@
+plugins {
+    id 'groovy'
+    id 'java'
+    id 'jacoco'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:3.0.9'
+    
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'com.lesfurets:jenkins-pipeline-unit:1.9'
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+}
+
+test {
+    reports {
+        html.required = true
+        junitXml.required = true
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+    
+    dependsOn test
+}
