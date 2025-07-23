@@ -14,7 +14,18 @@ def call(String filePath, def defaultValue = null) {
     
     try {
         script.echo "Reading JSON from file: ${filePath}"
-        def result = JsonUtils.parseJsonFile(filePath, defaultValue)
+        
+        def result
+        try {
+            def file = new File(filePath)
+            if (file.exists()) {
+                result = JsonUtils.parseJsonFile(filePath)
+            } else {
+                result = defaultValue
+            }
+        } catch (Exception e) {
+            result = defaultValue
+        }
         
         if (result == defaultValue) {
             script.echo "File not found or invalid: ${filePath}, returning default value"

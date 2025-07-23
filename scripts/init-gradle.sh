@@ -1,6 +1,6 @@
+# 该脚本用于初始化Gradle项目并创建Gradle Wrapper
 #!/bin/bash
 
-# 该脚本用于初始化Gradle项目并创建Gradle Wrapper
 
 set -e
 
